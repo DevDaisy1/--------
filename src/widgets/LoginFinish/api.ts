@@ -1,5 +1,5 @@
-import { AutorizationResponse } from "../../pages/Login/api/data"
-import { injectToApi } from "../../shared/api/api"
+import { AutorizationResponse } from "../../features/autorization/api/data"
+import { injectToApi } from "../../shared/lib/api"
 
 const loginFinish = injectToApi({
     endpoints: builder => ({
@@ -12,4 +12,4 @@ const loginFinish = injectToApi({
     })
 })
 
-export const {useLazyFinishLoginQuery} = loginFinish
+export const {useLazyFinishLoginQuery}=loginFinish;

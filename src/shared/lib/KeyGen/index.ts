@@ -1,12 +1,13 @@
-import { v4 } from "uuid";
+import { v4 } from 'uuid'
 
-class KeyGen{
-    constructor(){
+class KeyGen {
+    constructor() {
         this.currentKey = v4()
     }
-    public currentKey:string;
-    public gen(){
+    public currentKey;
+    public gen() {
         this.currentKey = v4()
-    };
+    }
 }
-export const keyGen = new KeyGen();
+
+export const keyGen = new KeyGen()

@@ -1,30 +1,23 @@
-import './App.css'
-import { AppRouter } from './routers'
-import '@mantine/core/styles.css';
-import { Provider } from 'react-redux'
-import { store } from './stores/store';
-import { ToastContainer } from 'react-toastify';
-import { MantineProvider } from '@mantine/core';
-import { useSetThemeMutation } from '../shared/api/theme';
-import { useEffect, useState } from 'react';
-import { ThemeProvider } from '../shared/lib/ThemeProvider';
-import { AuthProvider, useMyContext } from '../shared/lib';
+import { MantineProvider, AppShell } from "@mantine/core";
+import Router from "./router";
+import Header from "../shared/ui/Header";
+import MyNavbar from "../shared/ui/Navbar";
+import { ThemeContext } from "../shared/lib/providers/ThemeProvider";
+import { useAppHook } from "./hooks";
 
 const App = () => {
-  return (
-    <>
-      <Provider store={store}>
-        <MantineProvider>
-          <AuthProvider>
-            <ThemeProvider>
-              <AppRouter />
-              <ToastContainer/>
-            </ThemeProvider>
-          </AuthProvider>
-        </MantineProvider>
-      </Provider>
-    </>
-  )
-}
+  const {checked, setChecked, isAuth} = useAppHook();
+  return(
+    <ThemeContext.Provider value={{ checked, setChecked }}>
+      <MantineProvider 
+      withGlobalStyles 
+      withNormalizeCSS
+      theme={{
+        colorScheme: checked ? 'dark' : 'light',
+      }}>
+        <AppShell header={<Header/>} children={<Router/>} navbar={<>{isAuth&&<MyNavbar/>}</>}/>
+      </MantineProvider>
+    </ThemeContext.Provider>
+  )}
 
-export default App
+export default App;
