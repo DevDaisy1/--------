@@ -3,30 +3,40 @@ name: Security Scan
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   semgrep:
-    name: Semgrep Scan
+    name: Semgrep Scan (SAST)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Semgrep
-        run: pip install semgrep
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Python and Semgrep
+        run: |
+          pip install semgrep
+
       - name: Run Semgrep
         run: semgrep scan --config "p/react" .
 
   snyk:
-    name: Snyk Dependency Check
+    name: Snyk Dependency Check (SCA)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install Dependencies
-        run: npm install
-      - name: Run Snyk
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Snyk test
         uses: snyk/actions/node@master
         with:
           args: test
